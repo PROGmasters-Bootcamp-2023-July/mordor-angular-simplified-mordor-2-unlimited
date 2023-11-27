@@ -1,0 +1,51 @@
+<div>
+    <h3>Orc form</h3>
+    <hr/>
+    <form [formGroup]="formData">
+        <div class="form-group">
+            <label
+                for="name"
+                class="form-control-label"
+                [ngClass]="{'text-danger': formData.get('name').invalid && formData.get('name').touched}"
+            >
+                Orc name:
+            </label>
+            <input
+                type="text"
+                id="name"
+                formControlName="name"
+                name="name"
+                placeholder="Orc name"
+                class="form-control"
+                [ngClass]="{'is-invalid': formData.get('name').invalid && formData.get('name').touched}"
+            />
+            <small
+                *ngIf="formData.get('name').invalid && formData.get('name').touched"
+                class="text-danger"
+            >Please enter an orc name
+            </small>
+        </div>
+
+        <div class="form-group">
+            <label
+                class="form-control-label"
+                [ngClass]="{'text-danger': formData.get('weapons').invalid && formData.get('weapons').touched}"
+            >
+                Weapons:
+            </label>
+            <div formArrayName="weapons" *ngFor="let weapon of weaponOptions; let i = index">
+                <label>
+                    <input type="checkbox" [formControlName]="i">
+                    {{ weapon.displayName }}
+                </label>
+            </div>
+            <small
+                *ngIf="formData.get('weapons').invalid && formData.get('weapons').touched"
+                class="text-danger"
+            >
+                Please choose maximum three weapons
+            </small>
+        </div>
+
+    </form>
+</div>

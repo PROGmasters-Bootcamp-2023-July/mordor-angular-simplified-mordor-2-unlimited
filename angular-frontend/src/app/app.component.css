@@ -1,0 +1,8 @@
+.app__container {
+    margin-top: 56px;
+    padding: 24px;
+}
+
+.nav-item, .navbar-brand {
+    cursor: pointer;
+}
