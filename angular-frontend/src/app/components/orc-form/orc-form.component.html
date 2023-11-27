@@ -1,7 +1,7 @@
 <div>
     <h3>Orc form</h3>
     <hr/>
-    <form [formGroup]="formData">
+    <form [formGroup]="formData" (ngSubmit)="saveOrc()">
         <div class="form-group">
             <label
                 for="name"
@@ -36,7 +36,7 @@
         <div>
           <label>
             <select id="raceType" formControlName="raceType">
-              <option *ngFor="let raceType of raceTypes" [value]="raceType.displayName">{{raceType.displayName}}</option>
+              <option *ngFor="let raceType of raceTypes" [value]="raceType.name">{{raceType.displayName}}</option>
             </select>
           </label>
         </div>
@@ -81,8 +81,7 @@
             </label>
             <div formArrayName="weapons" *ngFor="let weapon of weaponOptions; let i = index">
                 <label>
-                    <input type="checkbox" [formControlName]="i">
-                    {{ weapon.displayName }}
+                    <input type="checkbox" [formControlName]="i">{{ weapon.displayName }}
                 </label>
             </div>
             <small
@@ -91,7 +90,7 @@
             >
                 Please choose maximum three weapons
             </small>
-        </div>
+        </div><br>
 
       <button [disabled]="formData.invalid">Submit</button>
 
