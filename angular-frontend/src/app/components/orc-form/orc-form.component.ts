@@ -63,7 +63,10 @@ export class OrcFormComponent implements OnInit {
     this.orcService.createOrc(data).subscribe({
       next: (value) => console.log('Sikeres mentés!'),
       error: (err) => console.log(err),
-      complete: () => console.log('Lefutott a complete ág!')
+      complete: () => {
+        console.log('Lefutott a complete ág!');
+        this.orcSaved.emit();
+      }
     });
 
 

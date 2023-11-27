@@ -12,7 +12,13 @@ export class OrcListComponent implements OnInit {
 
     orcs: Array<OrcListItemModel> = [];
 
-    constructor(private orcService: OrcService) {}
+    constructor(private orcService: OrcService) {
+      orcService.getOrcList().subscribe({
+        next: (value) => this.orcs = value,
+        error: (err) => console.log(err),
+        complete: () => console.log('Lista megjött!')
+      });
+    }
 
     ngOnInit() {
 

@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -55,5 +56,14 @@ public class OrcService {
             orcRaceTypeOptions.add(new OrcRaceTypeOption(orcRaceType));
         }
         return orcRaceTypeOptions;
+    }
+
+    public List<OrcDetails> findAll() {
+        List<Orc> orcList = orcRepository.findAll();
+        return orcList
+                .stream()
+                .map(OrcDetails::new)
+                .collect(Collectors.toList());
+
     }
 }

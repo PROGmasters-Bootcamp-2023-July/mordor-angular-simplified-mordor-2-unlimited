@@ -19,6 +19,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/orcs")
 public class OrcController {
@@ -42,5 +44,13 @@ public class OrcController {
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
+
+
+    @GetMapping
+    public List<OrcDetails> listAll() {
+        return orcService.findAll();
+    }
+
+
 
 }
