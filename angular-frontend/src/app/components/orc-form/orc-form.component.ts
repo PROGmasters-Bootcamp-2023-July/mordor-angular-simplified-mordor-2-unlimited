@@ -6,6 +6,7 @@ import {RaceTypeOptionModel} from '../../models/raceTypeOption.model';
 import {WeaponOptionModel} from '../../models/weaponOption.model';
 import {OrcFormDataModel} from "../../models/orcFormData.model";
 
+
 @Component({
   selector: 'app-orc-form',
   templateUrl: './orc-form.component.html',
@@ -17,13 +18,11 @@ export class OrcFormComponent implements OnInit {
   weaponOptions: WeaponOptionModel[];
   @Output() orcSaved = new EventEmitter();
 
+  orc: OrcFormDataModel = {name: "", raceType: "", killCount: null, weapons: []};
+
   constructor(private orcService: OrcService, private formBuilder: FormBuilder) {
-    this.formData = this.formBuilder.group({
-      name: ['', Validators.required],
-      raceType: ['', Validators.required],
-      killCount: [null, [Validators.required, Validators.min(0)]],
-      weapons: this.formBuilder.array([], this.checkBoxValidator.bind(this)),
-    });
+    this.formDataValues();
+
   }
 
   ngOnInit() {
@@ -32,13 +31,27 @@ export class OrcFormComponent implements OnInit {
         this.weaponOptions = formInitData.weapons;
         this.createCheckboxControls();
         this.raceTypes = formInitData.raceTypes;
-
-        // console.log(this.weaponOptions);
-        // console.log(this.raceTypes);
-
       });
+
+    this.orcService.orcToModifySubject.subscribe({
+      next: (value) => {
+        this.orc = value;
+        console.log(value);
+        console.log(this.orc);
+        console.log(this.orc.name);
+        console.log(this.orc.id);
+      }
+    });
   }
 
+  formDataValues() {
+    this.formData = this.formBuilder.group({
+      name: [this.orc.name, Validators.required],
+      raceType: [this.orc.raceType, Validators.required],
+      killCount: [this.orc.killCount, [Validators.required, Validators.min(0)]],
+      weapons: this.formBuilder.array([], this.checkBoxValidator.bind(this)),
+    });
+  }
 
   private createCheckboxControls() {
     this.weaponOptions.forEach(() => {
@@ -59,6 +72,11 @@ export class OrcFormComponent implements OnInit {
     data.weapons = this.createWeaponsArrayToSend();
 
     console.log(data);
+    console.log(this.orc.id);
+
+    if (this.orc.id > 0) {
+      console.log('XXXXXXXXXXXXXX');
+    }
 
     this.orcService.createOrc(data).subscribe({
       next: (value) => console.log('Sikeres mentés!'),
@@ -68,8 +86,6 @@ export class OrcFormComponent implements OnInit {
         this.orcSaved.emit();
       }
     });
-
-
   }
 
   checkBoxValidator(arr: AbstractControl): { required: boolean } {

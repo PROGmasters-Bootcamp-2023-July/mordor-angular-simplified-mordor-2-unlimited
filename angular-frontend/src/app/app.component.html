@@ -14,7 +14,7 @@
         </div>
     </nav>
 
-    <app-orc-list *ngIf="currentPage === 'list'"></app-orc-list>
+    <app-orc-list *ngIf="currentPage === 'list'" (orcModify)="switchPage('form')"></app-orc-list>
     <app-orc-form *ngIf="currentPage === 'form'" (orcSaved)="switchPage('list')"></app-orc-form>
 </div>
 

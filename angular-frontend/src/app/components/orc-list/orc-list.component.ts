@@ -1,29 +1,27 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 
-import { OrcService } from '../../services/orc.service';
+import {OrcService} from '../../services/orc.service';
 import {OrcListItemModel} from '../../models/orcListItem.model';
+import {OrcFormDataModel} from "../../models/orcFormData.model";
 
 @Component({
-    selector: 'app-orc-list',
-    templateUrl: './orc-list.component.html',
-    styleUrls: ['./orc-list.component.css'],
+  selector: 'app-orc-list',
+  templateUrl: './orc-list.component.html',
+  styleUrls: ['./orc-list.component.css'],
 })
 export class OrcListComponent implements OnInit {
 
-    orcs: Array<OrcListItemModel> = [];
+  orcs: Array<OrcListItemModel> = [];
 
-    constructor(private orcService: OrcService) {
-      this.renderOrcList();
-      // orcService.getOrcList().subscribe({
-      //   next: (value) => this.orcs = value,
-      //   error: (err) => console.log(err),
-      //   complete: () => console.log('Lista megjött!')
-      // });
-    }
+  @Output() orcModify = new EventEmitter();
 
-    ngOnInit() {
+  constructor(private orcService: OrcService) {
+    this.renderOrcList();
+  }
 
-    }
+  ngOnInit() {
+
+  }
 
   deleteOrc(id: number) {
     this.orcService.deleteOrc(id).subscribe({
@@ -36,6 +34,12 @@ export class OrcListComponent implements OnInit {
     });
   }
 
+  modifyOrc(orc: OrcFormDataModel) {
+    this.orcModify.emit();
+    this.orcService.orcToModifySubject.next(orc);
+  }
+
+
   renderOrcList() {
     this.orcService.getOrcList().subscribe({
       next: (value) => this.orcs = value,
@@ -43,6 +47,4 @@ export class OrcListComponent implements OnInit {
       complete: () => console.log('Lista megjött!')
     });
   }
-
-
 }

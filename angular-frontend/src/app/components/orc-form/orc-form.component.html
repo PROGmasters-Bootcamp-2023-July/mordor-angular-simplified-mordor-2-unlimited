@@ -8,13 +8,13 @@
                 class="form-control-label"
                 [ngClass]="{'text-danger': formData.get('name').invalid && formData.get('name').touched}">
                 Orc name:
-            </label>
+            </label
             <input
                 type="text"
                 id="name"
                 formControlName="name"
                 name="name"
-                placeholder="Orc name"
+                placeholder="orc.name"
                 class="form-control"
                 [ngClass]="{'is-invalid': formData.get('name').invalid && formData.get('name').touched}"
             />

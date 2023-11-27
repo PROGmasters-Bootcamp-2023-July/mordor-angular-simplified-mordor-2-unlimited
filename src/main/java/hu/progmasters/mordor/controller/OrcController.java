@@ -11,8 +11,10 @@
 
 package hu.progmasters.mordor.controller;
 
+import hu.progmasters.mordor.domain.Orc;
 import hu.progmasters.mordor.domain.dto.OrcDetails;
 import hu.progmasters.mordor.domain.dto.OrcFormData;
+import hu.progmasters.mordor.domain.dto.OrcFormModify;
 import hu.progmasters.mordor.domain.dto.OrcListItem;
 import hu.progmasters.mordor.service.OrcService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +58,13 @@ public class OrcController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> removeOrc(@PathVariable Long id) {
         orcService.remove(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Orc> modifyOrc(@RequestBody OrcFormModify orcFormModify, @PathVariable Long id) {
+        orcService.update(id, orcFormModify);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
