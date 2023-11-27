@@ -26,6 +26,52 @@
             </small>
         </div>
 
+      <div class="form-group">
+        <label
+          class="form-control-label"
+          [ngClass]="{'text-danger': formData.get('raceType').invalid && formData.get('raceType').touched}"
+        >
+          Race type:
+        </label>
+        <div>
+          <label>
+            <select id="raceType" formControlName="raceType">
+              <option *ngFor="let raceType of raceTypes" [value]="raceType.displayName">{{raceType.displayName}}</option>
+            </select>
+          </label>
+        </div>
+        <small
+          *ngIf="formData.get('raceType').invalid && formData.get('raceType').touched"
+          class="text-danger">
+          Please choose a race-type
+        </small>
+      </div>
+
+      <div class="form-group">
+        <label
+          for="killCount"
+          class="form-control-label"
+          [ngClass]="{'text-danger': formData.get('killCount').invalid && formData.get('killCount').touched}"
+        >
+          Kill count:
+        </label>
+        <input
+          type="number"
+          id="killCount"
+          formControlName="killCount"
+          name="killCount"
+          placeholder=""
+          class="form-control"
+          [ngClass]="{'is-invalid': formData.get('killCount').invalid && formData.get('killCount').touched}"
+        />
+        <small
+          *ngIf="formData.get('killCount').invalid && formData.get('killCount').touched"
+          class="text-danger"
+        >Please enter kill-count
+        </small>
+      </div>
+
+
         <div class="form-group">
             <label
                 class="form-control-label"

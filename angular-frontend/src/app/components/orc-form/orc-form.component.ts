@@ -18,9 +18,11 @@ export class OrcFormComponent implements OnInit {
 
   constructor(private orcService: OrcService, private formBuilder: FormBuilder) {
     this.formData = this.formBuilder.group({
-                                             name   : ['', Validators.required],
-                                             weapons: this.formBuilder.array([],this.checkBoxValidator.bind(this)),
-                                           });
+      name   : ['', Validators.required],
+      raceType : ['', Validators.required],
+      killCount : [null, [Validators.required, Validators.min(0)]],
+      weapons: this.formBuilder.array([],this.checkBoxValidator.bind(this)),
+    });
   }
 
   ngOnInit() {
