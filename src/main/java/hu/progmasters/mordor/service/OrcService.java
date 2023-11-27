@@ -15,6 +15,7 @@ import hu.progmasters.mordor.domain.Orc;
 import hu.progmasters.mordor.domain.OrcRaceType;
 import hu.progmasters.mordor.domain.WeaponType;
 import hu.progmasters.mordor.domain.dto.OrcDetails;
+import hu.progmasters.mordor.domain.dto.OrcListItem;
 import hu.progmasters.mordor.domain.dto.OrcRaceTypeOption;
 import hu.progmasters.mordor.domain.dto.WeaponOption;
 import hu.progmasters.mordor.repository.OrcRepository;
@@ -58,11 +59,11 @@ public class OrcService {
         return orcRaceTypeOptions;
     }
 
-    public List<OrcDetails> findAll() {
+    public List<OrcListItem> findAll() {
         List<Orc> orcList = orcRepository.findAll();
         return orcList
                 .stream()
-                .map(OrcDetails::new)
+                .map(OrcListItem::new)
                 .collect(Collectors.toList());
 
     }

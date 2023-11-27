@@ -13,6 +13,7 @@ package hu.progmasters.mordor.controller;
 
 import hu.progmasters.mordor.domain.dto.OrcDetails;
 import hu.progmasters.mordor.domain.dto.OrcFormData;
+import hu.progmasters.mordor.domain.dto.OrcListItem;
 import hu.progmasters.mordor.service.OrcService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,15 +42,14 @@ public class OrcController {
     @PostMapping
     public ResponseEntity<Void> saveOrc(@RequestBody OrcDetails orcDetails) {
         orcService.saveOrc(orcDetails);
-
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
 
     @GetMapping
-    public ResponseEntity<List<OrcDetails>> listAll() {
-        List<OrcDetails> orcDetailsList = orcService.findAll();;
-        return new ResponseEntity<>(orcDetailsList, HttpStatus.OK);
+    public ResponseEntity<List<OrcListItem>> listAll() {
+        List<OrcListItem> orcListItemList = orcService.findAll();
+        return new ResponseEntity<>(orcListItemList, HttpStatus.OK);
     }
 
 
