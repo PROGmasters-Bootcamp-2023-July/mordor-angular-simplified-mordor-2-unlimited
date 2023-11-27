@@ -47,10 +47,10 @@ public class OrcController {
 
 
     @GetMapping
-    public List<OrcDetails> listAll() {
-        return orcService.findAll();
+    public ResponseEntity<List<OrcDetails>> listAll() {
+        List<OrcDetails> orcDetailsList = orcService.findAll();;
+        return new ResponseEntity<>(orcDetailsList, HttpStatus.OK);
     }
-
 
 
 }
