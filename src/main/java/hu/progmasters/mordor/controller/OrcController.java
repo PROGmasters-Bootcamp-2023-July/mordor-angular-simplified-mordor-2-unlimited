@@ -53,4 +53,11 @@ public class OrcController {
     }
 
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> removeOrc(@PathVariable Long id) {
+        orcService.remove(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
 }

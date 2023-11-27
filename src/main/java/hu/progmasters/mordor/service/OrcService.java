@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -66,5 +67,16 @@ public class OrcService {
                 .map(OrcListItem::new)
                 .collect(Collectors.toList());
 
+    }
+
+    public void remove(Long id) {
+        Orc orc = findOrcById(id);
+        orcRepository.delete(orc);
+    }
+
+    private Orc findOrcById(Long id) {
+        return orcRepository
+                .findById(id)
+                .orElseThrow(EntityNotFoundException::new);
     }
 }

@@ -25,4 +25,8 @@ export class OrcService {
     return this.http.get(BASE_URL);
   }
 
+  deleteOrc(id: number): Observable<any> {
+    return this.http.delete(BASE_URL + '/' + id);
+  }
+
 }
