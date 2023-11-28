@@ -2,6 +2,6 @@ export interface OrcListItemModel {
     id: number;
     killCount: number;
     name: string;
-    orcRaceType: string;
+    raceType: string;
     weapons: string[];
 }

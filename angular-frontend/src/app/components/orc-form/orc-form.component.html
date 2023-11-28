@@ -1,13 +1,12 @@
 <div>
     <h3>Orc form</h3>
     <hr/>
-    <form [formGroup]="formData">
+    <form [formGroup]="formData" (ngSubmit)="onSubmit()">
         <div class="form-group">
             <label
                 for="name"
                 class="form-control-label"
-                [ngClass]="{'text-danger': formData.get('name').invalid && formData.get('name').touched}"
-            >
+                [ngClass]="{'text-danger': formData.get('name').invalid && formData.get('name').touched}">
                 Orc name:
             </label>
             <input
@@ -15,7 +14,7 @@
                 id="name"
                 formControlName="name"
                 name="name"
-                placeholder="Orc name"
+                placeholder="orc.name"
                 class="form-control"
                 [ngClass]="{'is-invalid': formData.get('name').invalid && formData.get('name').touched}"
             />
@@ -26,6 +25,52 @@
             </small>
         </div>
 
+      <div class="form-group">
+        <label
+          class="form-control-label"
+          [ngClass]="{'text-danger': formData.get('raceType').invalid && formData.get('raceType').touched}"
+        >
+          Race type:
+        </label>
+        <div>
+          <label>
+            <select id="raceType" formControlName="raceType">
+              <option *ngFor="let raceType of raceTypes" [value]="raceType.name">{{raceType.displayName}}</option>
+            </select>
+          </label>
+        </div>
+        <small
+          *ngIf="formData.get('raceType').invalid && formData.get('raceType').touched"
+          class="text-danger">
+          Please choose a race-type
+        </small>
+      </div>
+
+      <div class="form-group">
+        <label
+          for="killCount"
+          class="form-control-label"
+          [ngClass]="{'text-danger': formData.get('killCount').invalid && formData.get('killCount').touched}"
+        >
+          Kill count:
+        </label>
+        <input
+          type="number"
+          id="killCount"
+          formControlName="killCount"
+          name="killCount"
+          placeholder=""
+          class="form-control"
+          [ngClass]="{'is-invalid': formData.get('killCount').invalid && formData.get('killCount').touched}"
+        />
+        <small
+          *ngIf="formData.get('killCount').invalid && formData.get('killCount').touched"
+          class="text-danger"
+        >Please enter kill-count
+        </small>
+      </div>
+
+
         <div class="form-group">
             <label
                 class="form-control-label"
@@ -35,8 +80,7 @@
             </label>
             <div formArrayName="weapons" *ngFor="let weapon of weaponOptions; let i = index">
                 <label>
-                    <input type="checkbox" [formControlName]="i">
-                    {{ weapon.displayName }}
+                    <input type="checkbox" [formControlName]="i">{{ weapon.displayName }}
                 </label>
             </div>
             <small
@@ -45,7 +89,9 @@
             >
                 Please choose maximum three weapons
             </small>
-        </div>
+        </div><br>
+
+      <button [disabled]="formData.invalid">Submit</button>
 
     </form>
 </div>

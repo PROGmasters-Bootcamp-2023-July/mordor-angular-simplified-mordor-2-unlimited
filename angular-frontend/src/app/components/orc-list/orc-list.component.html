@@ -1,2 +1,31 @@
 <h3>Orc list</h3>
 <hr>
+  <table class="table table-striped">
+    <thead class="thead-dark">
+    <tr>
+      <th>Id</th>
+      <th>Orc name</th>
+      <th>Race-type</th>
+      <th>Kill-count</th>
+      <th>Weapons</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody id="list-table-body">
+    <tr *ngFor="let orc of orcs">
+      <td>{{orc.id}}</td>
+      <td>{{orc.name}}</td>
+      <td>{{orc.raceType}}</td>
+      <td>{{orc.killCount}}</td>
+      <td>
+        <ul *ngFor="let weapon of orc.weapons">
+          <li>{{weapon}}</li>
+        </ul>
+      </td>
+      <td>
+        <button class="btn btn-sm btn-success" type="submit" (click)="editOrc(orc.id)">Edit</button>
+        <button class="btn btn-sm btn-danger" type="submit" (click)="deleteOrc(orc.id)">Delete</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>

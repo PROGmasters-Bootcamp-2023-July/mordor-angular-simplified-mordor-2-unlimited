@@ -14,16 +14,17 @@ package hu.progmasters.mordor.service;
 import hu.progmasters.mordor.domain.Orc;
 import hu.progmasters.mordor.domain.OrcRaceType;
 import hu.progmasters.mordor.domain.WeaponType;
-import hu.progmasters.mordor.domain.dto.OrcDetails;
-import hu.progmasters.mordor.domain.dto.OrcRaceTypeOption;
-import hu.progmasters.mordor.domain.dto.WeaponOption;
+import hu.progmasters.mordor.domain.dto.*;
 import hu.progmasters.mordor.repository.OrcRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -55,5 +56,48 @@ public class OrcService {
             orcRaceTypeOptions.add(new OrcRaceTypeOption(orcRaceType));
         }
         return orcRaceTypeOptions;
+    }
+
+    public List<OrcListItem> findAll() {
+        List<Orc> orcList = orcRepository.findAll();
+        return orcList
+                .stream()
+                .map(OrcListItem::new)
+                .collect(Collectors.toList());
+
+    }
+
+    public void remove(Long id) {
+        Orc orc = findOrcById(id);
+        orcRepository.delete(orc);
+    }
+
+    public void update(Long id, OrcFormModify orcFormModify) {
+        Orc orcToUpdate = findOrcById(id);
+        updateOrcFields(orcToUpdate, orcFormModify);
+    }
+
+    private void updateOrcFields(Orc orcToUpdate, OrcFormModify orcFormModify) {
+        orcToUpdate.setName(orcFormModify.getName());
+        orcToUpdate.setKillCount(orcFormModify.getKillCount());
+        orcToUpdate.setOrcRaceType(OrcRaceType.valueOf(orcFormModify.getRaceType()));
+        for (String weapon : orcFormModify.getWeapons()) {
+            orcToUpdate.getWeapons().add(WeaponType.valueOf(weapon));
+        }
+    }
+
+    private Orc findOrcById(Long id) {
+        return orcRepository
+                .findById(id)
+                .orElseThrow(EntityNotFoundException::new);
+    }
+
+    public OrcDetails getOrcDetailsById(Long id) {
+        OrcDetails result = null;
+        Optional<Orc> orcOptional = orcRepository.findById(id);
+        if (orcOptional.isPresent()) {
+            result = new OrcDetails(orcOptional.get());
+        }
+        return result;
     }
 }

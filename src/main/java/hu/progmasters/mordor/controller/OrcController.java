@@ -11,13 +11,18 @@
 
 package hu.progmasters.mordor.controller;
 
+import hu.progmasters.mordor.domain.Orc;
 import hu.progmasters.mordor.domain.dto.OrcDetails;
 import hu.progmasters.mordor.domain.dto.OrcFormData;
+import hu.progmasters.mordor.domain.dto.OrcFormModify;
+import hu.progmasters.mordor.domain.dto.OrcListItem;
 import hu.progmasters.mordor.service.OrcService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/orcs")
@@ -39,8 +44,34 @@ public class OrcController {
     @PostMapping
     public ResponseEntity<Void> saveOrc(@RequestBody OrcDetails orcDetails) {
         orcService.saveOrc(orcDetails);
-
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
+
+
+    @GetMapping
+    public ResponseEntity<List<OrcListItem>> listAll() {
+        List<OrcListItem> orcListItemList = orcService.findAll();
+        return new ResponseEntity<>(orcListItemList, HttpStatus.OK);
+    }
+
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> removeOrc(@PathVariable Long id) {
+        orcService.remove(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Orc> modifyOrc(@RequestBody OrcFormModify orcFormModify, @PathVariable Long id) {
+        orcService.update(id, orcFormModify);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<OrcDetails> getOrc(@PathVariable Long id) {
+        return new ResponseEntity<>(orcService.getOrcDetailsById(id), HttpStatus.OK);
+    }
+
 
 }

@@ -1,20 +1,20 @@
 <div class="container app__container">
 
     <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
-        <span id="nav-index" class="navbar-brand" (click)="switchPage('list')">Mordor Manager</span>
+        <span id="nav-index" class="navbar-brand" (click)="switchToList()">Mordor Manager</span>
         <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#navbar"
                 aria-expanded="false" aria-controls="navbar" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                <li class="nav-item nav-link" id="orc-form-link" (click)="switchPage('form')">New Orc</li>
-                <li class="nav-item nav-link" id="orc-list-link" (click)="switchPage('list')">Orc list</li>
+                <li class="nav-item nav-link" id="orc-form-link" (click)="switchToForm()">New Orc</li>
+                <li class="nav-item nav-link" id="orc-list-link" (click)="switchToList()">Orc list</li>
             </ul>
         </div>
     </nav>
 
-    <app-orc-list *ngIf="currentPage === 'list'"></app-orc-list>
-    <app-orc-form *ngIf="currentPage === 'form'" (orcSaved)="switchPage('list')"></app-orc-form>
+    <app-orc-list *ngIf="currentPage === 'list'" (editClicked)="switchToForm()"></app-orc-list>
+    <app-orc-form *ngIf="currentPage === 'form'" (orcSaved)="switchToList()"></app-orc-form>
 </div>
 
