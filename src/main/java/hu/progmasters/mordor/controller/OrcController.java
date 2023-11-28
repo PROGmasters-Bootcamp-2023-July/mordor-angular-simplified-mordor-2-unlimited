@@ -68,5 +68,10 @@ public class OrcController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<OrcDetails> getOrc(@PathVariable Long id) {
+        return new ResponseEntity<>(orcService.getOrcDetailsById(id), HttpStatus.OK);
+    }
+
 
 }

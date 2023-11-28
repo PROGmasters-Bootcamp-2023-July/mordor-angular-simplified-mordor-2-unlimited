@@ -16,12 +16,24 @@ export class OrcFormComponent implements OnInit {
   formData: FormGroup;
   raceTypes: RaceTypeOptionModel[];
   weaponOptions: WeaponOptionModel[];
+  orcId: number;
   @Output() orcSaved = new EventEmitter();
 
-  orc: OrcFormDataModel = {name: "", raceType: "", killCount: null, weapons: []};
 
   constructor(private orcService: OrcService, private formBuilder: FormBuilder) {
-    this.formDataValues();
+    this.formData = this.formBuilder.group({
+      name: ['', Validators.required],
+      raceType: ['', Validators.required],
+      killCount: [null, [Validators.required, Validators.min(0)]],
+      weapons: this.formBuilder.array([], this.checkBoxValidator.bind(this)),
+    });
+
+    this.orcService.resetForm.subscribe(
+      () => {
+        this.orcId = null;
+        this.formData.reset();
+      },
+    );
 
   }
 
@@ -31,27 +43,13 @@ export class OrcFormComponent implements OnInit {
         this.weaponOptions = formInitData.weapons;
         this.createCheckboxControls();
         this.raceTypes = formInitData.raceTypes;
+        this.orcId = this.orcService.orcId;
+        if (this.orcId) {
+          this.getOrcDetails(this.orcId);
+        }
       });
-
-    this.orcService.orcToModifySubject.subscribe({
-      next: (value) => {
-        this.orc = value;
-        console.log(value);
-        console.log(this.orc);
-        console.log(this.orc.name);
-        console.log(this.orc.id);
-      }
-    });
   }
 
-  formDataValues() {
-    this.formData = this.formBuilder.group({
-      name: [this.orc.name, Validators.required],
-      raceType: [this.orc.raceType, Validators.required],
-      killCount: [this.orc.killCount, [Validators.required, Validators.min(0)]],
-      weapons: this.formBuilder.array([], this.checkBoxValidator.bind(this)),
-    });
-  }
 
   private createCheckboxControls() {
     this.weaponOptions.forEach(() => {
@@ -66,18 +64,14 @@ export class OrcFormComponent implements OnInit {
       .filter((weapon: string) => weapon !== null);
   }
 
-  saveOrc() {
 
-    const data: OrcFormDataModel = {...this.formData.value};
+  onSubmit() {
+    const data = {...this.formData.value};
     data.weapons = this.createWeaponsArrayToSend();
+    this.orcId ? this.updateOrc(data) : this.createOrc(data);
+  }
 
-    console.log(data);
-    console.log(this.orc.id);
-
-    if (this.orc.id > 0) {
-      console.log('XXXXXXXXXXXXXX');
-    }
-
+  createOrc(data: OrcFormDataModel) {
     this.orcService.createOrc(data).subscribe({
       next: (value) => console.log('Sikeres mentés!'),
       error: (err) => console.log(err),
@@ -88,11 +82,42 @@ export class OrcFormComponent implements OnInit {
     });
   }
 
+
+  updateOrc(data: OrcFormDataModel) {
+    this.orcService.updateOrc(data, this.orcId).subscribe(
+      () => this.orcSaved.emit(),
+      error => console.warn(error),
+    );
+  }
+
   checkBoxValidator(arr: AbstractControl): { required: boolean } {
     let counter = 0;
     if (arr instanceof FormArray) {
       arr.getRawValue().forEach(value => value ? counter++ : counter);
     }
     return counter > 3 ? {required: true} : null;
+  }
+
+
+  createWeaponsFormArray = (weaponsNames: string[]) => {
+    return this.weaponOptions.map(weaponOption => {
+      return weaponsNames.includes(weaponOption.name);
+    });
+  };
+
+
+  private getOrcDetails(orcId: number) {
+    this.orcService.fetchOrcDetails(orcId).subscribe(
+      (response: OrcFormDataModel) => {
+        if (response) {
+          this.formData.patchValue({
+            name: response.name,
+            killCount: response.killCount,
+            raceType: response.raceType,
+            weapons: this.createWeaponsFormArray(response.weapons),
+          });
+        }
+      },
+    );
   }
 }

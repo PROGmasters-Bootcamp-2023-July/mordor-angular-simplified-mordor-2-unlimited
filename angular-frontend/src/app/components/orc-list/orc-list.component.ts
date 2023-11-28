@@ -11,16 +11,14 @@ import {OrcFormDataModel} from "../../models/orcFormData.model";
 })
 export class OrcListComponent implements OnInit {
 
-  orcs: Array<OrcListItemModel> = [];
-
-  @Output() orcModify = new EventEmitter();
+  orcs: OrcListItemModel[] = [];
+  @Output() editClicked = new EventEmitter();
 
   constructor(private orcService: OrcService) {
-    this.renderOrcList();
   }
 
   ngOnInit() {
-
+    this.renderOrcList();
   }
 
   deleteOrc(id: number) {
@@ -34,17 +32,25 @@ export class OrcListComponent implements OnInit {
     });
   }
 
-  modifyOrc(orc: OrcFormDataModel) {
-    this.orcModify.emit();
-    this.orcService.orcToModifySubject.next(orc);
-  }
+  // modifyOrc(orc: OrcFormDataModel) {
+  //   this.orcModify.emit();
+  //   this.orcService.orcToModifySubject.next(orc);
+  // }
+
+  editOrc = (id: number) => {
+    this.orcService.orcId = id;
+    this.editClicked.emit();
+  };
 
 
-  renderOrcList() {
-    this.orcService.getOrcList().subscribe({
-      next: (value) => this.orcs = value,
-      error: (err) => console.log(err),
-      complete: () => console.log('Lista megjött!')
-    });
+  renderOrcList = () => {
+    this.orcService.getOrcList().subscribe(
+      (orcList: OrcListItemModel[]) => {
+        this.orcs = orcList;
+      },
+      error => console.warn(error),
+    );
+
   }
+
 }

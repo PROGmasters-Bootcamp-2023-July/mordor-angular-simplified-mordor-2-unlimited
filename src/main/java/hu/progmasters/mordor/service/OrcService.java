@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -89,5 +90,14 @@ public class OrcService {
         return orcRepository
                 .findById(id)
                 .orElseThrow(EntityNotFoundException::new);
+    }
+
+    public OrcDetails getOrcDetailsById(Long id) {
+        OrcDetails result = null;
+        Optional<Orc> orcOptional = orcRepository.findById(id);
+        if (orcOptional.isPresent()) {
+            result = new OrcDetails(orcOptional.get());
+        }
+        return result;
     }
 }
