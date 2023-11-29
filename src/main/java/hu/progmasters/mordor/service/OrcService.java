@@ -81,9 +81,10 @@ public class OrcService {
         orcToUpdate.setName(orcFormModify.getName());
         orcToUpdate.setKillCount(orcFormModify.getKillCount());
         orcToUpdate.setOrcRaceType(OrcRaceType.valueOf(orcFormModify.getRaceType()));
-        for (String weapon : orcFormModify.getWeapons()) {
-            orcToUpdate.getWeapons().add(WeaponType.valueOf(weapon));
-        }
+        orcToUpdate.setWeapons(orcFormModify.getWeapons());
+//        for (String weapon : orcFormModify.getWeapons()) {
+//            orcToUpdate.getWeapons().add(WeaponType.valueOf(weapon));
+//        }
     }
 
     private Orc findOrcById(Long id) {

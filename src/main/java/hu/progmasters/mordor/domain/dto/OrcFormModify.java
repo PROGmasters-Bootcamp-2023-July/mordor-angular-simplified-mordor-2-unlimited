@@ -1,5 +1,7 @@
 package hu.progmasters.mordor.domain.dto;
 
+import hu.progmasters.mordor.domain.WeaponType;
+
 import java.util.List;
 
 public class OrcFormModify {
@@ -10,7 +12,7 @@ public class OrcFormModify {
 
     private Long killCount;
 
-    private List<String> weapons;
+    private List<WeaponType> weapons;
 
     public OrcFormModify() {
     }
@@ -39,11 +41,11 @@ public class OrcFormModify {
         this.killCount = killCount;
     }
 
-    public List<String> getWeapons() {
+    public List<WeaponType> getWeapons() {
         return weapons;
     }
 
-    public void setWeapons(List<String> weapons) {
+    public void setWeapons(List<WeaponType> weapons) {
         this.weapons = weapons;
     }
 }
